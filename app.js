@@ -1,22 +1,24 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var log4js = require('log4js');
+
 
 var members = require('./controllers/member-controller');
+var log = log4js.getLogger("startup");
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://family-tree:Om1Shiva@ds055545.mongolab.com:55545/family-tree');
 var db = mongoose.connection;
-db.on('error',()=> {console.log('Error connecting to db');});
-db.once('open',()=> {console.log('connected to Mongo DB');});
+db.on('error',()=> {log.error('Error connecting to db');});
+db.once('open',()=> {log.debug('connected to Mongo DB');});
 var app = express();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(log4js.connectLogger(log4js.getLogger("http"), { level: log4js.levels.INFO, format: ':method :url' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

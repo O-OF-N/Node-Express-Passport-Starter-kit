@@ -7,6 +7,9 @@
 var app = require('../app');
 var debug = require('debug')('family-tree:server');
 var http = require('http');
+var log4js = require('log4js');
+log4js.configure('/Users/vinodm1986/Workspace/OK/express/family-tree/config/log4js.json');
+var log = log4js.getLogger("startup");
 
 /**
  * Get port from environment and store in Express.
@@ -65,11 +68,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      log.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      log.error(bind + ' is already in use');
       process.exit(1);
       break;
     default:
@@ -86,5 +89,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  log.debug('Listening on ' + bind);
 }

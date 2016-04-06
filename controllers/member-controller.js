@@ -2,24 +2,33 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var Members = require('../models/member');
+var log4js = require('log4js');
 
+var logger = log4js.getLogger("app");
+//Send success response
 var sendJsonResponse = function (res, json) {
     try {
-        console.log('inside success');
+        logger.trace('starting sendJsonResponse');
         res.json(json);
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving sendJsonResponse');
     }
 };
 
+//Send error response
 var sendErrorResponse = function (res, err) {
     try {
-        console.log('inside error');
+        logger.trace('starting sendErrorResponse');
         res.send(err);
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving sendErrorResponse');
     }
 };
+
 
 //Get all members
 router.get('/', function (req, res, next) {
@@ -28,6 +37,8 @@ router.get('/', function (req, res, next) {
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         console.log('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving sendErrorResponse');
     }
 });
 
@@ -39,6 +50,8 @@ router.get('/:memberid', function (req, res, next) {
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         console.log('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving sendErrorResponse');
     }
 });
 
@@ -50,6 +63,8 @@ router.get('/:firstName/:lastName', function (req, res, next) {
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         console.log('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving sendErrorResponse');
     }
 });
 
@@ -60,6 +75,8 @@ router.post('/', function (memberReq, res) {
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         console.log('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving post');
     }
 });
 
