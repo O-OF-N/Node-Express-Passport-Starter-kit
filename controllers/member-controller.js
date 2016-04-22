@@ -86,8 +86,16 @@ router.post('/', function (memberReq, res) {
 
 
 //Update a member by ID
-router.put('/', function (memberReq, res) {
-
+router.put('/:memberId', function (memberReq, res) {
+ try {
+        logger.trace('entering put');
+        var promise = Members.updateByID(memberReq);
+        promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
+    } catch (err) {
+        console.log('rendering json response failed with error:' + err);
+    } finally{
+        logger.trace('leaving put');
+    }
 });
 //Delete a member by ID
 module.exports = router;
