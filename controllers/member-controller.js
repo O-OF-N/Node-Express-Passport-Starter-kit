@@ -86,7 +86,7 @@ router.post('/', function (memberReq, res) {
 
 
 //Update a member by ID
-router.put('/:memberId', function (memberReq, res) {
+router.put('/', function (memberReq, res) {
  try {
         logger.trace('entering put');
         var promise = Members.updateByID(memberReq);

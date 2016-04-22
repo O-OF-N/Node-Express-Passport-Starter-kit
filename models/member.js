@@ -71,12 +71,14 @@ MemberModel.add = function (req) {
 //Update a member
 MemberModel.updateByID = function (req) {
     var deferred = Q.defer();
+    var id = req.body._id;
+    console.log(req.body)
+    console.log('id = '+id);
     var member = MemberModel.buildUpdateFromReq(req);
     console.log(member);
     console.log(delete member._id);
     console.log(member);
-   // MemberModel.findOneAndUpdate({ _id: req.params._id }, 
-    MemberModel.findByIdAndUpdate(req.params._id,
+    MemberModel.findOneAndUpdate({ _id:id},
     { $set: member }, 
     { multi: true }, 
     function (err, member) {
