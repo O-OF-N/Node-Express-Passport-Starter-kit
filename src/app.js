@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var log4js = require('log4js');
 
 
-var members = require('./controllers/member-controller');
+var members = require('./src/controllers/member-controller');
 var log = log4js.getLogger("startup");
 
 var mongoose = require('mongoose');
