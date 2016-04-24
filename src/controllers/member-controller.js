@@ -29,9 +29,8 @@ var sendErrorResponse = function (res, err) {
     }
 };
 
-
 //Get all members
-router.get('/', function (req, res, next) {
+var getAllMembers = function (req, res, next) {
     try {
         logger.trace('entering get all members');
         var promise = Members.fetchAllMembers();
@@ -41,10 +40,10 @@ router.get('/', function (req, res, next) {
     } finally{
         logger.trace('leaving get all members');
     }
-});
+};
 
 //Get a single member by ID
-router.get('/:memberid', function (req, res, next) {
+var getMemberById = function (req, res, next) {
     try {
         logger.trace('entering get member by id');
         var memberId = req.params.memberid;
@@ -55,10 +54,10 @@ router.get('/:memberid', function (req, res, next) {
     } finally{
         logger.trace('leaving get member by id');
     }
-});
+};
 
 //Get members by first name and last name
-router.get('/:firstName/:lastName', function (req, res, next) {
+var getMemberByName = function (req, res, next) {
     try {
         logger.trace('entering get member by name');
         var filterObject = { firstName: req.params.firstName, lastName: req.params.lastName }
@@ -69,10 +68,10 @@ router.get('/:firstName/:lastName', function (req, res, next) {
     } finally{
         logger.trace('leaving get member by name');
     }
-});
+};
 
 //Add a single member
-router.post('/', function (memberReq, res) {
+var addMemeber = function (memberReq, res) {
     try {
         logger.trace('entering post');
         var promise = Members.add(memberReq);
@@ -82,11 +81,10 @@ router.post('/', function (memberReq, res) {
     } finally{
         logger.trace('leaving post');
     }
-});
-
+};
 
 //Update a member by ID
-router.put('/', function (memberReq, res) {
+var updateMember = function (memberReq, res) {
  try {
         logger.trace('entering put');
         var promise = Members.updateByID(memberReq);
@@ -96,6 +94,21 @@ router.put('/', function (memberReq, res) {
     } finally{
         logger.trace('leaving put');
     }
-});
-//Delete a member by ID
-module.exports = router;
+};
+
+//routes
+router.get('/', (req, res, next) => getAllMembers(req, res, next));
+router.get('/:memberid', (req, res, next) => getMemberById(req, res, next));
+router.get('/:firstName/:lastName', (req, res, next) => getMemberByName(req, res, next));
+router.post('/', (req, res, next) => addMemeber(req, res, next));
+router.put('/', (req, res, next) => updateMember(req, res, next));
+
+//exports
+module.exports.router = router;
+module.exports.getAllMembers = getAllMembers;
+module.exports.getMemberById = getMemberById;
+module.exports.getMemberByName = getMemberByName;
+module.exports.addMemeber = addMemeber;
+module.exports.updateMember = updateMember;
+module.exports.sendJsonResponse = sendJsonResponse;
+module.exports.sendErrorResponse = sendErrorResponse;
