@@ -1,3 +1,12 @@
+'use strict';
+/*
+Description: 
+    Entry to the application
+Author: 
+    Vinod Mohanan
+Update log:
+        
+*/
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');

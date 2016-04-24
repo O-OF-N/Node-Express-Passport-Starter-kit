@@ -1,3 +1,13 @@
+'use strict';
+/*
+Description: 
+    Controller for adding, removing, updating and fetching members.
+Author: 
+    Vinod Mohanan
+Update log:
+        
+*/
+
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');

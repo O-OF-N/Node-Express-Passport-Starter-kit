@@ -1,3 +1,10 @@
+'use strict';
+/*
+Author: Vinod Mohanan
+Description: 
+    Member Model.
+*/
+
 //require
 var Q = require("q");
 var mongoose = require('mongoose')
