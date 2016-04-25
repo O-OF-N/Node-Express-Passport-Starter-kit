@@ -21,7 +21,7 @@ var sendJsonResponse = function (res, json) {
         logger.trace('entering sendJsonResponse');
         res.json(json);
     } catch (err) {
-        logger.error('rendering json response failed with error:' + err);
+        logger.error('sendJsonResponse: rendering json response failed with error:' + err);
     } finally{
         logger.trace('leaving sendJsonResponse');
     }
@@ -33,7 +33,7 @@ var sendErrorResponse = function (res, err) {
         logger.trace('entering sendErrorResponse');
         res.send(err);
     } catch (err) {
-        logger.error('rendering json response failed with error:' + err);
+        logger.error('sendErrorResponse: rendering json response failed with error:' + err);
     } finally{
         logger.trace('leaving sendErrorResponse');
     }
@@ -42,67 +42,72 @@ var sendErrorResponse = function (res, err) {
 //Get all members
 var getAllMembers = function (req, res, next) {
     try {
-        logger.trace('entering get all members');
+        logger.trace('entering getAllMembers');
         var promise = Members.fetchAllMembers();
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('getAllMembers: rendering json response failed with error:' + err);
+        sendErrorResponse(res,err);
     } finally{
-        logger.trace('leaving get all members');
+        logger.trace('leaving getAllMembers');
     }
 };
 
 //Get a single member by ID
 var getMemberById = function (req, res, next) {
     try {
-        logger.trace('entering get member by id');
+        logger.trace('entering getMemberById');
         var memberId = req.params.memberid;
         var promise = Members.fetchMemberById(memberId);
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('getMemberById: rendering json response failed with error:' + err);
+        sendErrorResponse(res,err);
     } finally{
-        logger.trace('leaving get member by id');
+        logger.trace('leaving getMemberById');
     }
 };
 
 //Get members by first name and last name
 var getMemberByName = function (req, res, next) {
     try {
-        logger.trace('entering get member by name');
+        logger.trace('entering getMemberByName');
         var filterObject = { firstName: req.params.firstName, lastName: req.params.lastName }
         var promise = Members.filterMembers(filterObject);
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('getMemberByName: rendering json response failed with error:' + err);
+        sendErrorResponse(res,err);
     } finally{
-        logger.trace('leaving get member by name');
+        logger.trace('leaving getMemberByName');
     }
 };
 
 //Add a single member
 var addMemeber = function (memberReq, res) {
     try {
-        logger.trace('entering post');
+        logger.trace('entering addMemeber');
         var promise = Members.add(memberReq);
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('addMemeber: rendering json response failed with error:' + err);
+        sendErrorResponse(res,err);
     } finally{
-        logger.trace('leaving post');
+        logger.trace('leaving addMemeber');
     }
 };
 
 //Update a member by ID
 var updateMember = function (memberReq, res) {
  try {
-        logger.trace('entering put');
+        logger.trace('entering updateMember');
         var promise = Members.updateByID(memberReq);
         promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
-        console.log('rendering json response failed with error:' + err);
+        logger.error('updateMember: rendering json response failed with error:' + err);
+        sendErrorResponse(res,err);
     } finally{
-        logger.trace('leaving put');
+        logger.trace('leaving updateMember');
     }
 };
 

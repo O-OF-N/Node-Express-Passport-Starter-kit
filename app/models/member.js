@@ -79,18 +79,11 @@ MemberModel.add = function (req) {
 MemberModel.updateByID = function (req) {
     var deferred = Q.defer();
     var id = req.body._id;
-    console.log(req.body)
-    console.log('id = '+id);
     var member = MemberModel.buildUpdateFromReq(req);
-    console.log(member);
-    console.log(delete member._id);
-    console.log(member);
     MemberModel.findOneAndUpdate({ _id:id},
     { $set: member }, 
     { multi: true }, 
     function (err, member) {
-        console.log('err = ' + err);
-        console.log('member = ' + member);
         if (!err)
             deferred.resolve(member);
         else
@@ -112,7 +105,6 @@ MemberModel.buildUpdateFromReq = function (req) {
     var Obj = new Object();
     for (var property in req.body) {
         if (req.body.hasOwnProperty(property)) {
-            console.log('prop = ' + property);
             Obj[property] = req.body[property];
         }
     }

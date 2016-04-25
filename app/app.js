@@ -21,7 +21,7 @@ var log = log4js.getLogger("startup");
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://family-tree:Om1Shiva@ds055545.mongolab.com:55545/family-tree');
 var db = mongoose.connection;
-db.on('error',()=> {log.error('Error connecting to db');});
+db.on('error',(err)=> {log.error(`Error connecting to db ${err}`);});
 db.once('open',()=> {log.debug('connected to Mongo DB');});
 var app = express();
 

@@ -1,5 +1,5 @@
 #ignore the sub directories of node_modules 
 npm-debug.log*
 node_modules
-log
+*.log
 coverage.html
