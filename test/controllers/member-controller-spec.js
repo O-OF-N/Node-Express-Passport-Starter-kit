@@ -11,12 +11,12 @@ var req,res,next = {};
 
 beforeEach(function () {
     res = {
-      json: sinon.spy(),
-      send: sinon.spy()
+        json: sinon.spy(),
+        send: sinon.spy()
     };
     sinon.spy(controller,'sendJsonResponse');
     sinon.spy(controller,'sendErrorResponse');
-  });
+});
   
 afterEach(function () {
     res.send.reset();
@@ -25,35 +25,40 @@ afterEach(function () {
 });
 
 describe('Get all members',function(){
+    var modelStub = {};
+    
+    beforeEach(function () {
+        modelStub = sinon.stub(model,'fetchAllMembers');
+    });
+    
+    afterEach(function () {           
+        modelStub.restore();        
+    });
+    
     it('returns all members',function(done){
         const response = [{name:'member1'},{name:'member2'}];
-        var modelStub = sinon.stub(model,'fetchAllMembers').
-            returns(Q.resolve(response)); //returns a Q resolved response.
+        modelStub.returns(Q.resolve(response));
         controller.getAllMembers(req,res,next);    
         process.nextTick(function(){
            expect(res.json).to.have.been.calledWith(response); 
-           modelStub.restore();        
            done();  
         });
     });
     it('model throws an error', function(done){
        var err = {message: "failed to get response"};
-       var modelStub = sinon.stub(model,'fetchAllMembers').throws(err);
+       modelStub.throws(err);
        controller.getAllMembers(req,res,next);
        process.nextTick(function(){
-           expect(res.send).to.have.been.calledWith(err); 
-           modelStub.restore();        
+           expect(res.send).to.have.been.calledWith(err);      
            done();  
         });  
     });
     it('model returns an error response from the db',function(){
         const response = {message:'failed to fetch from db'};
-        var modelStub = sinon.stub(model,'fetchAllMembers').
-            returns(Q.resolve(response)); //returns a Q resolved response.
+        modelStub.returns(Q.resolve(response));
         controller.getAllMembers(req,res,next);    
         process.nextTick(function(){
-           expect(res.json).to.have.been.calledWith(response); 
-           modelStub.restore();        
+           expect(res.json).to.have.been.calledWith(response);        
            done();  
         });
     });
