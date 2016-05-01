@@ -12,15 +12,14 @@ var jsonSpy = {},errorSpy = {};
 
 beforeEach(function () {
     res = {
-        json: sinon.spy(),
-        send: sinon.spy()
+        json: sinon.spy()
     };
-    jsonSpy = sinon.spy(controller,'sendJsonResponse');
+    jsonSpy = sinon.spy(controller,'sendSuccessResponse');
     errorSpy = sinon.spy(controller,'sendErrorResponse');
 });
   
 afterEach(function () {
-    res.send.reset();
+    res.json.reset();
     jsonSpy.restore();
     errorSpy.restore();
 });
@@ -51,7 +50,7 @@ describe('Get all members',function(){
        modelStub.throws(err);
        controller.getAllMembers(req,res,next);
        process.nextTick(function(){
-           expect(res.send).to.have.been.calledWith(err);  
+           expect(res.json).to.have.been.calledWith(err);  
            expect(modelStub).to.have.callCount(1);     
            done();  
         });  
@@ -97,7 +96,7 @@ describe('Get a single member by ID',function(){
        modelStub.throws(err);
        controller.getMemberById(req,res,next);
        process.nextTick(function(){
-           expect(res.send).to.have.been.calledWith(err);  
+           expect(res.json).to.have.been.calledWith(err);  
            expect(modelStub).to.have.callCount(1); 
            done();  
         });  
@@ -143,7 +142,7 @@ describe('Get members by first and last name',function(){
        modelStub.throws(err);
        controller.getMemberByName(req,res,next);
        process.nextTick(function(){
-           expect(res.send).to.have.been.calledWith(err);  
+           expect(res.json).to.have.been.calledWith(err);  
            expect(modelStub).to.have.callCount(1); 
            done();  
         });  
@@ -189,7 +188,7 @@ describe('Add a single member',function(){
        modelStub.throws(err);
        controller.addMemeber(req,res,next);
        process.nextTick(function(){
-           expect(res.send).to.have.been.calledWith(err);  
+           expect(res.json).to.have.been.calledWith(err);  
            expect(modelStub).to.have.callCount(1); 
            done();  
         });  
@@ -237,7 +236,7 @@ describe('Update a single member',function(){
        modelStub.throws(err);
        controller.updateMember(req,res,next);
        process.nextTick(function(){
-           expect(res.send).to.have.been.calledWith(err);  
+           expect(res.json).to.have.been.calledWith(err);  
            expect(modelStub).to.have.callCount(1); 
            done();  
         });  

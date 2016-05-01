@@ -16,7 +16,7 @@ var log4js = require('log4js');
 
 var logger = log4js.getLogger("app");
 //Send success response
-var sendJsonResponse = function (res, json) {
+var sendSuccessResponse = function (res, json) {
     try {
         logger.trace('entering sendJsonResponse');
         res.json(json);
@@ -31,7 +31,7 @@ var sendJsonResponse = function (res, json) {
 var sendErrorResponse = function (res, err) {
     try {
         logger.trace('entering sendErrorResponse');
-        res.send(err);
+        res.json(err);
     } catch (err) {
         logger.error('sendErrorResponse: rendering json response failed with error:' + err);
     } finally{
@@ -44,7 +44,7 @@ var getAllMembers = function (req, res, next) {
     try {
         logger.trace('entering getAllMembers');
         var promise = Members.fetchAllMembers();
-        promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
+        promise.then(json => sendSuccessResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         logger.error('getAllMembers: rendering json response failed with error:' + err);
         sendErrorResponse(res,err);
@@ -59,7 +59,7 @@ var getMemberById = function (req, res, next) {
         logger.trace('entering getMemberById');
         var memberId = req.params.memberid;
         var promise = Members.fetchMemberById(memberId);
-        promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
+        promise.then(json => sendSuccessResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         logger.error('getMemberById: rendering json response failed with error:' + err);
         sendErrorResponse(res,err);
@@ -74,7 +74,7 @@ var getMemberByName = function (req, res, next) {
         logger.trace('entering getMemberByName');
         var filterObject = { firstName: req.params.firstName, lastName: req.params.lastName }
         var promise = Members.filterMembers(filterObject);
-        promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
+        promise.then(json => sendSuccessResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         logger.error('getMemberByName: rendering json response failed with error:' + err);
         sendErrorResponse(res,err);
@@ -88,7 +88,7 @@ var addMemeber = function (memberReq, res) {
     try {
         logger.trace('entering addMemeber');
         var promise = Members.add(memberReq);
-        promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
+        promise.then(json => sendSuccessResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         logger.error('addMemeber: rendering json response failed with error:' + err);
         sendErrorResponse(res,err);
@@ -102,7 +102,7 @@ var updateMember = function (memberReq, res) {
  try {
         logger.trace('entering updateMember');
         var promise = Members.updateByID(memberReq);
-        promise.then(json => sendJsonResponse(res, json), err => sendErrorResponse(res, err));
+        promise.then(json => sendSuccessResponse(res, json), err => sendErrorResponse(res, err));
     } catch (err) {
         logger.error('updateMember: rendering json response failed with error:' + err);
         sendErrorResponse(res,err);
@@ -125,5 +125,5 @@ module.exports.getMemberById = getMemberById;
 module.exports.getMemberByName = getMemberByName;
 module.exports.addMemeber = addMemeber;
 module.exports.updateMember = updateMember;
-module.exports.sendJsonResponse = sendJsonResponse;
+module.exports.sendSuccessResponse = sendSuccessResponse;
 module.exports.sendErrorResponse = sendErrorResponse;

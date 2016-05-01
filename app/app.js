@@ -14,12 +14,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var log4js = require('log4js');
 
-
+var appConfig = require('../config/app-config');
 var members = require('./controllers/member-controller').router;
+
 var log = log4js.getLogger("startup");
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://family-tree:Om1Shiva@ds055545.mongolab.com:55545/family-tree');
+mongoose.connect(appConfig.database.development);
 var db = mongoose.connection;
 db.on('error',(err)=> {log.error(`Error connecting to db ${err}`);});
 db.once('open',()=> {log.debug('connected to Mongo DB');});
