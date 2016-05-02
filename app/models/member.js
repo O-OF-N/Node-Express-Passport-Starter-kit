@@ -14,7 +14,8 @@ var Schema = mongoose.Schema;
 var memberSchema = new Schema({
     firstName: String,
     lastName: String,
-    city: String
+    city: String,
+    profileId:String  
 });
 
 //Model creation
@@ -46,6 +47,18 @@ MemberModel.fetchMemberById = function (id) {
             deferred.resolve(member);
         else
             deferred.reject("Fetching member by ID failed");
+    });
+    return deferred.promise;
+};
+
+//Fetch an individual Member by profile ID
+MemberModel.fetchMemberByProfileId = function (profileId) {
+    var deferred = Q.defer();
+    MemberModel.find({profileId:profileId}, function (err, member) {
+        if (!err)
+            deferred.resolve(member);
+        else
+            deferred.reject("Fetching member by profile ID failed:"+err);
     });
     return deferred.promise;
 };
@@ -88,6 +101,20 @@ MemberModel.updateByID = function (req) {
             deferred.resolve(member);
         else
             deferred.reject("updating member failed" + err);
+    });
+    return deferred.promise;
+};
+
+//Create a new User
+MemberModel.createNewUser = function (profileId) {
+    var deferred = Q.defer();
+    var member = MemberModel.getNewInstance();
+    member.profileId = profileId;
+    member.save(function (err, member) {
+        if (!err)
+            deferred.resolve(member);
+        else
+            deferred.reject("Creating a new user failed");
     });
     return deferred.promise;
 };

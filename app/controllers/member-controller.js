@@ -10,7 +10,6 @@ Update log:
 
 var express = require('express');
 var router = express.Router();
-var fs = require('fs');
 var Members = require('../models/member');
 var log4js = require('log4js');
 
