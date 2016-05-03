@@ -18,25 +18,30 @@ var logger = log4js.getLogger("app");
 router.get('/auth/facebook', passport.authenticate('facebook'));
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
-        logger.trace('the user is authenticated' + req.user.id);
-        var promise = Members.fetchMemberByProfileId(req.user.id);
-        promise.then((members) => {
-            logger.trace('member fetched = ' + members.length);
-            if (members.length < 1) {
-                var memberPromise = Members.createNewUser(req.user.id);
-                memberPromise.then((member) => {
+        try {
+            logger.trace('the user is authenticated' + req.user.id);
+            var promise = Members.fetchMemberByProfileId(req.user.id);
+            promise.then((members) => {
+                logger.trace('member fetched = ' + members.length);
+                if (members.length < 1) {
+                    var memberPromise = Members.createNewUser(req.user.id);
+                    memberPromise.then((member) => {
                         logger.trace('New member Created');
                         res.redirect('/members/');
-                    },(err)=>{
+                    }, (err) => {
                         logger.error('Member creation failed');
+                        res.json(err);
                     });
-            } else{
-               logger.trace('Existing user'); 
-               res.redirect('/members/');
-            }
-        }, (err) => {
-            logger.error('err = ' + err);
-        });
+                } else {
+                    logger.trace('Existing user');
+                    res.redirect('/members/');
+                }
+            }, (err) => {
+                logger.error('err = ' + err);
+            });
+        } catch (err) {
+                logger.error('err = ' + err);      
+        }
     });
 
 module.exports.router = router;
