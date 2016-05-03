@@ -1,8 +1,10 @@
 var ValidationUtil = function () {
-    this.isNumber = function(input){
-        return typeof(input) === 'number';
-    };
-    this.isString = function(input){
-        return typeof(input) === 'string';
-    }
-}
+};
+ValidationUtil.isNumber = function(input){
+    return typeof(input) === 'number';
+};
+ValidationUtil.isString = function(input){
+    return typeof(input) === 'string';
+};
+
+module.exports = ValidationUtil;
