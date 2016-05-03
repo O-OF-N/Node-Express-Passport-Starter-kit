@@ -6,6 +6,7 @@ var Q = require("q");
 chai.use(sinonChai);
 
 var controller = require('../../app/controllers/member-controller');
+var response = require('../../app/controllers/response-controller');
 var model = require('../../app/models/member');
 var req = {},res = {},next = {};
 var jsonSpy = {},errorSpy = {};
@@ -14,8 +15,8 @@ beforeEach(function () {
     res = {
         json: sinon.spy()
     };
-    jsonSpy = sinon.spy(controller,'sendSuccessResponse');
-    errorSpy = sinon.spy(controller,'sendErrorResponse');
+    jsonSpy = sinon.spy(response,'sendSuccessResponse');
+    errorSpy = sinon.spy(response,'sendErrorResponse');
 });
   
 afterEach(function () {
