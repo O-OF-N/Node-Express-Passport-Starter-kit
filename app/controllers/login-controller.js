@@ -15,9 +15,9 @@ var log4js = require('log4js');
 
 var logger = log4js.getLogger("app");
 
-var checkExistingOrNewUser = function (req, res) {
+var handleLogin = function (req, res) {
     try {
-        logger.trace('the user is authenticated' + req.user.id);
+        logger.trace('the user is authenticated' + req.user.emails);
         var promise = Members.fetchMemberByProfileId(req.user.id);
         promise.then((members) => {
             logger.trace('member fetched = ' + members.length);
@@ -44,6 +44,6 @@ var checkExistingOrNewUser = function (req, res) {
 
 router.get('/auth/facebook', passport.authenticate('facebook'));
 router.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res)=>checkExistingOrNewUser(req, res));
+    passport.authenticate('facebook',{ scope:'email',failureRedirect: '/login' }), (req, res)=>handleLogin(req, res));
 
 module.exports.router = router;
