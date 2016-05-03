@@ -8,10 +8,12 @@ var facebookStrategy = new FacebookStrategy({
   callbackURL: appConfig.authentication.facebook.callbackURL
 }, (accessToken, refreshToken, profile, done) => {
     console.log(profile.id);
-    console.log(profile.username);
+    console.log(profile.givenName);
     console.log(profile.displayName);
     console.log(profile.gender);
-    console.log(profile.profileUrl);
+    console.log(profile.middleName);
+    
+    console.log(profile.emails);
     return done(null, profile);
 });
 
