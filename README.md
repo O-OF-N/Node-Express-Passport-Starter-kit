@@ -1,2 +1,3 @@
-# Family-Tree
-Node.js application to represent family members in a tree structure.
+# Node Express Passport - Starter Kit
+
+A starter project I use to setup my Node.js application
